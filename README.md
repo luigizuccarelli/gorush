@@ -198,7 +198,7 @@ gorush is a push notification micro server using [Gin](https://github.com/gin-go
   I ran a simple script to run +1000 push nofifications 
     
     ```
-     for i in {1..100}
+     for i in {1..1000}
      do 
         curl -H "Content-Type: application/json" -d '{
           "notifications": [{
@@ -228,14 +228,22 @@ gorush is a push notification micro server using [Gin](https://github.com/gin-go
 
 ## Gaps
   No IOS push tests were executed only android
+  
   No in depth concurrency was tested
+  
   All tests were done locally - so scalability needs to be investigated
+  
   No auth or security (keycloak etc) was used - needs ot be investigated
+  
   No proxy testing
+  
   Integration into current RHMAP needs investigating
 
 ## Conslusion
   With the poc I carried out I feel that gorush could be a very viable fit for RHMAP (maybe 5.x)
+  
   It's memory footprint is much lower than that of the current UPS.
+  
   The poc was fairly easy to get up and running and worked without a hitch
-  We need to do some further testin wrt scalability, security, reliability etc.
+  
+  We need to do some further testing wrt scalability, security, reliability etc.
