@@ -5,7 +5,7 @@ gorush is a push notification micro server using [Gin](https://github.com/gin-go
 [![Gorush](https://github.com/appleboy/gorush)](https://github.com/appleboy/gorush) 
 
 ## What
-  This was a poc to check gorush interact within an openshift cluster and to do a gap analysis with UPS in RHMAP and this POC
+  This was a poc to check gorush interact within an openshift cluster and to do a gap analysis 
 
 ## Details
   I deployed ocp 3.5 locally on fedora 25
