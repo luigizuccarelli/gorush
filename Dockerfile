@@ -1,5 +1,5 @@
 # build stage
-FROM appleboy/golang-testing AS build-env
+FROM appleboy/golang-testing:1.7.5
 ADD . /go/src/github.com/appleboy/gorush
 RUN cd /go/src/github.com/appleboy/gorush && make docker_build
 
@@ -8,7 +8,7 @@ FROM centurylink/ca-certs
 EXPOSE 8088
 
 ADD config/config.yml /
-COPY --from=build-env /go/src/github.com/appleboy/gorush/bin/gorush /
+COPY --from=0 /go/src/github.com/appleboy/gorush/bin/gorush /
 
 ENTRYPOINT ["/gorush"]
 CMD ["-c", "config.yml"]

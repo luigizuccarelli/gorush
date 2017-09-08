@@ -1,0 +1,137 @@
+{
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "lmz-ups",
+    "annotations": {
+      "description": "Configuration for go lang ups"
+    }
+  },
+  "objects": [
+     {
+      "kind": "ConfigMap",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "ups-config"
+      },
+      "data": {
+         "test": "${TEST}"
+      }
+    },
+    {
+      "kind": "Service",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "lmz-ups-service",
+        "labels": {
+          "name": "lmz-ups-service"
+        }
+      },
+      "spec": {
+        "ports": [
+          {
+            "port": 8088
+          }
+        ],
+        "selector": {
+          "name": "lmz-ups"
+        }
+      }
+    },
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "lmz-ups",
+        "labels": {
+          "name": "lmz-ups"
+        }
+      },
+      "spec": {
+        "strategy": {
+          "type": "Rolling",
+          "resources": {
+            "limits": {
+              "cpu": "800m",
+              "memory": "800Mi"
+            },
+            "requests": {
+              "cpu": "200m",
+              "memory": "200Mi"
+            }
+          }
+        },
+        "triggers": [
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "replicas": "1",
+        "selector": {
+          "name": "lmz-ups"
+        },
+        "template": {
+          "metadata": {
+            "labels": {
+              "name": "lmz-ups"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "gorush-ups",
+                "image": "gorush:dev",
+                "ports": [
+                  {
+                    "containerPort": 8088
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "UPS_NAMESPACE",
+                    "valueFrom": {
+                      "fieldRef": {
+                        "fieldPath": "metadata.namespace"
+                      }
+                    }
+                  },
+                  {
+                    "name": "TEST_PARAM",
+                    "value": "test"
+                  },
+                  {
+                    "name": "TEST",
+                    "valueFrom": {
+                      "configMapKeyRef": {
+                        "name": "ups-config",
+                        "key": "test"
+                      }
+                    }
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "800m",
+                    "memory": "800Mi"
+                  },
+                  "requests": {
+                    "cpu": "200m",
+                    "memory": "200Mi"
+                  }
+                },
+                "imagePullPolicy": "IfNotPresent"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "TEST",
+      "value": "test",
+      "description": "Test data"
+    }
+  ]
+}
